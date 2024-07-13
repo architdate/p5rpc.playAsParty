@@ -1,0 +1,14 @@
+// Procedure Index: 7
+void D01_02_e129_065_START_hook()
+{
+    int var3;
+    SND_VOICE_DNGEVT_SETUP( 489, 380 );
+    SND_VOICE_DNGEVT_SYNC();
+    BIT_OFF( 11274 );
+    SET_COUNT( 145, 25350 );
+    var3 = FLD_SCRIPT_READ( 152, 4, 100 );
+    FLD_SCRIPT_READ_SYNC( var3 );
+    FLD_SCRIPT_EXEC( var3, 0 );
+    FLD_SCRIPT_FREE( var3 );
+    SND_VOICE_DNGEVT_FREE();
+}

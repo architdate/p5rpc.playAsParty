@@ -1,0 +1,7 @@
+// Procedure Index: 0
+void D01_01_SCENARIO_BATTLE_01_hook()
+{
+    CLEAR_PERSONA_STOCK();
+    ADD_STARTING_PERSONA();
+    D01_01_SCENARIO_BATTLE_01_unhooked();
+}

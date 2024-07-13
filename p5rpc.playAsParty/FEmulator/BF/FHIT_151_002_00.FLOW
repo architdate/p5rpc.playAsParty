@@ -1,0 +1,24 @@
+// Procedure Index: 14
+void D01_03_e161_313_START()
+{
+    int var17;
+    int var18;
+    FLD_PANEL_DISP( 0 );
+    var17 = FLD_PC_GET_RESHND( 0 );
+    FLD_UNIT_WAIT_DISABLE( var17 );
+    
+    if ( var17 >= 0 )
+    {
+        FLD_MODEL_SET_ROTATE( var17, 0, 180, 0, 10 );
+        FLD_UNIT_SET_SURPRISE( var17 );
+    }
+    WAIT( 15 );
+    SET_COUNT( 145, 31250 );
+    var18 = FLD_SCRIPT_READ( 151, 2, 120 );
+    FLD_SCRIPT_READ_SYNC( var18 );
+    FLD_SCRIPT_EXEC( var18, 0 );
+    FLD_SCRIPT_FREE( var18 );
+    SET_COUNT( 145, 31300 );
+    BIT_ON( 6516 );
+    FLD_LOCAL_FLAG_OFF( ( 49152 + 58 ) );
+}

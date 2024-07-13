@@ -1,0 +1,45 @@
+[
+    {
+        "Index": "0x96CC",
+        "ReturnType": "void",
+        "Name": "SET_EQUIP_PERSONA_TRAIT",
+        "Description": "Set trait ID as trait for equipped persona",
+        "Parameters": [
+            {
+                "Type": "int",
+                "Name": "param1",
+                "Description": "trait ID"
+            },
+            {
+                "Type": "int",
+                "Name": "param2",
+                "Description": "party ID"
+            }
+        ]
+    },
+    {
+        "Index": "0x0F5A",
+        "ReturnType": "void",
+        "Name": "SET_EQUIP_PERSONA_ID",
+        "Description": "Set persona ID for equipped persona",
+        "Parameters": [
+            {
+                "Type": "int",
+                "Name": "param1",
+                "Description": "persona id"
+            },
+            {
+                "Type": "int",
+                "Name": "param2",
+                "Description": "party ID"
+            }
+        ]
+    },
+    {
+        "Index": "0x278D",
+        "ReturnType": "void",
+        "Name": "ADD_STARTING_PERSONA",
+        "Description": "Set starting persona",
+        "Parameters": []
+    }
+]
