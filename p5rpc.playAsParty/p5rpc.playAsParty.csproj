@@ -59,10 +59,6 @@
   </ItemGroup>
 
   <ItemGroup>
-	  <Folder Include="Party\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Submodules\CriFs.V2.Hook.ReloadedII\Interfaces\CriFs.V2.Hook.Interfaces\CriFs.V2.Hook.Interfaces.csproj" />
   </ItemGroup>
 
