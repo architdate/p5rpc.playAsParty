@@ -1,5 +1,5 @@
 // Procedure Index: 14
-void D01_03_e161_313_START()
+void D01_03_e161_313_START_hook()
 {
     int var17;
     int var18;
