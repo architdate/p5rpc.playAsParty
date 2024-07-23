@@ -56,6 +56,10 @@ namespace p5rpc.playAsParty
         private nuint _expMultiplier;
 
         private IAsmHook _expGainHook;
+        private IP5RLib p5rLib;
+
+        private delegate void UpdatePartyPostBattle(nint param1);
+        private IHook<UpdatePartyPostBattle>? updateBattleHook;
 
         private nint _DAT_29e8c00_Address;
 
@@ -92,7 +96,7 @@ namespace p5rpc.playAsParty
             }
 
             var p5rLibController = _modLoader.GetController<IP5RLib>();
-            if (p5rLibController == null || !p5rLibController.TryGetTarget(out var p5rLib))
+            if (p5rLibController == null || !p5rLibController.TryGetTarget(out p5rLib))
             {
                 Utils.LogError($"Could not load IP5RLib");
                 return;
@@ -116,6 +120,11 @@ namespace p5rpc.playAsParty
             _memory = new Memory();
             _expMultiplier = _memory.Allocate(4).Address;
             _memory.Write(_expMultiplier, _configuration.ExpMultiplier);
+
+            startupScanner.AddMainModuleScan("45 31 C9 48 8D 15 ?? ?? ?? ?? 45 89 C8", result =>{
+                Utils.LogDebug($"Found update battle hook at at 0x{Utils.BaseAddress + result.Offset:X}");
+                updateBattleHook = _hooks.CreateHook<UpdatePartyPostBattle>(UpdatePartyPostBattleImpl, result.Offset + Utils.BaseAddress).Activate();
+            });
 
             startupScanner.AddMainModuleScan("8B F8 33 DB 0F B7 84 24 ?? ?? ?? ??", result =>
             {
@@ -202,24 +211,9 @@ namespace p5rpc.playAsParty
                 return FlowStatus.SUCCESS;
             });
 
-            var call_battle_change = flowFramework.Register("FLD_GET_ENCOUNTID", 1, () =>
-            {
-                Utils.LogDebug("inside call battle");
-                var api = flowFramework.GetFlowApi();
-                var num1 = api.GetIntArg(0);
-                //var num2 = api.GetIntArg(1);
-                var costume = p5rLib.FlowCaller.GET_EQUIP(1, 3);
-                p5rLib.FlowCaller.SET_EQUIP(1, 3, 28968);
-                p5rLib.FlowCaller.FLD_GET_ENCOUNTID(num1);
-                //p5rLib.FlowCaller.WAIT_BATTLE();
-                p5rLib.FlowCaller.SET_EQUIP(1, 3, costume);
-                return FlowStatus.SUCCESS;
-            }, 0x101C);
-
             Utils.LogDebug($"Flow Framework ID registered as: {id_trait} for trait");
             Utils.LogDebug($"Flow Framework ID registered as: {id_species} for species");
             Utils.LogDebug($"Flow Framework ID registered as: {party_persona} for starting persona stock add");
-            Utils.LogDebug($"Flow Framework ID registered as: {call_battle_change} for testing");
 
             // For more information about this template, please see
             // https://reloaded-project.github.io/Reloaded-II/ModTemplate/
@@ -228,6 +222,12 @@ namespace p5rpc.playAsParty
             // and some other neat features, override the methods in ModBase.
 
             // TODO: Implement some mod logic
+        }
+
+        private void UpdatePartyPostBattleImpl(nint param1)
+        {
+            updateBattleHook!.OriginalFunction(param1);
+            p5rLib.FlowCaller.SET_EQUIP(1,3,28968);
         }
 
         #region Standard Overrides
