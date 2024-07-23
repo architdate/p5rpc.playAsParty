@@ -202,9 +202,24 @@ namespace p5rpc.playAsParty
                 return FlowStatus.SUCCESS;
             });
 
+            var call_battle_change = flowFramework.Register("FLD_GET_ENCOUNTID", 1, () =>
+            {
+                Utils.LogDebug("inside call battle");
+                var api = flowFramework.GetFlowApi();
+                var num1 = api.GetIntArg(0);
+                //var num2 = api.GetIntArg(1);
+                var costume = p5rLib.FlowCaller.GET_EQUIP(1, 3);
+                p5rLib.FlowCaller.SET_EQUIP(1, 3, 28968);
+                p5rLib.FlowCaller.FLD_GET_ENCOUNTID(num1);
+                //p5rLib.FlowCaller.WAIT_BATTLE();
+                p5rLib.FlowCaller.SET_EQUIP(1, 3, costume);
+                return FlowStatus.SUCCESS;
+            }, 0x101C);
+
             Utils.LogDebug($"Flow Framework ID registered as: {id_trait} for trait");
             Utils.LogDebug($"Flow Framework ID registered as: {id_species} for species");
             Utils.LogDebug($"Flow Framework ID registered as: {party_persona} for starting persona stock add");
+            Utils.LogDebug($"Flow Framework ID registered as: {call_battle_change} for testing");
 
             // For more information about this template, please see
             // https://reloaded-project.github.io/Reloaded-II/ModTemplate/

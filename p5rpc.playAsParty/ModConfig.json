@@ -123,6 +123,7 @@
   "IsUniversalMod": false,
   "ModDependencies": [
     "crifs.v2.hook",
+    "P5R.CostumeFramework",
     "p5rpc.modloader",
     "Reloaded.Memory.SigScan.ReloadedII",
     "reloaded.sharedlib.hooks",
@@ -131,8 +132,6 @@
     "p5rpc.lib"
   ],
   "OptionalDependencies": [],
-  "SupportedAppId": [
-    "p5r.exe"
-  ],
+  "SupportedAppId": ["p5r.exe"],
   "ProjectUrl": ""
 }
