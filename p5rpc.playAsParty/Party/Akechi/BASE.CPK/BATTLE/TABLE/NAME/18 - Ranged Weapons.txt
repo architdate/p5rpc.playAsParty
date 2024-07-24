@@ -14,13 +14,13 @@ Unused
 Unused
 Unused
 Unused
-Tkachev
+Moebius
 Governance
 RESERVE
 Riot Police
 RESERVE
 Makaronov
-Nataraja EX
+Justitia EX
 RESERVE
 RESERVE
 RESERVE
@@ -28,8 +28,8 @@ RESERVE
 Jig 227
 RESERVE
 RESERVE
-Tyrant Pistol EX
-Model Gun
+Ancient Day
+Model Ray Gun
 Levinson M31
 RESERVE
 Granelli M3
@@ -242,7 +242,7 @@ R.I.Pistol
 Casino Start
 Sahasrara
 Sahasrara EX
-Nataraja
+Justitia
 RESERVE
 Sand Hawk
 Eliminator
@@ -250,7 +250,7 @@ Crimson Gun
 Mauser
 Yellow Girl
 Cocytus
-Tyrant Pistol
+Doomsday
 W Rifle Replica
 Casino Battle Gun
 Roosevelt
