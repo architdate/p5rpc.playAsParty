@@ -61,6 +61,12 @@ namespace p5rpc.playAsParty
         private delegate void UpdatePartyPostBattle(nint param1);
         private IHook<UpdatePartyPostBattle>? updateBattleHook;
 
+        private delegate nint UpdateCostumePreBattle(nint param1, nint param2);
+        private IHook<UpdateCostumePreBattle>? updateCostumePreBattleHook;
+
+        private delegate void UpdatePartyPostBattleEXP(nint param1, nint param2);
+        private IHook<UpdatePartyPostBattleEXP>? updateBattleHookEXP;
+
         private nint _DAT_29e8c00_Address;
 
         public Mod(ModContext context)
@@ -122,8 +128,20 @@ namespace p5rpc.playAsParty
             _memory.Write(_expMultiplier, _configuration.ExpMultiplier);
 
             startupScanner.AddMainModuleScan("45 31 C9 48 8D 15 ?? ?? ?? ?? 45 89 C8", result =>{
-                Utils.LogDebug($"Found update battle hook at at 0x{Utils.BaseAddress + result.Offset:X}");
+                Utils.LogDebug($"Found update battle hook at 0x{Utils.BaseAddress + result.Offset:X}");
                 updateBattleHook = _hooks.CreateHook<UpdatePartyPostBattle>(UpdatePartyPostBattleImpl, result.Offset + Utils.BaseAddress).Activate();
+            });
+
+            startupScanner.AddMainModuleScan("48 89 5C 24 ?? 48 89 74 24 ?? 48 89 7C 24 ?? 55 41 54 41 55 41 56 41 57 48 8D AC 24 ?? ?? ?? ?? 48 81 EC 20 04 00 00", result =>
+            {
+                Utils.LogDebug($"Found pre battle hook at 0x{Utils.BaseAddress + result.Offset:X}");
+                updateCostumePreBattleHook = _hooks.CreateHook<UpdateCostumePreBattle>(UpdateCostumePreBattleImpl, result.Offset + Utils.BaseAddress).Activate();
+            });
+
+            startupScanner.AddMainModuleScan("48 89 5C 24 ?? 48 89 6C 24 ?? 48 89 74 24 ?? 57 41 56 41 57 48 83 EC 20 8B 1D ?? ?? ?? ?? 48 8B F2", result =>
+            {
+                Utils.LogDebug($"Found exp function for post battle stuff at 0x{Utils.BaseAddress + result.Offset:X}");
+                //updateBattleHookEXP = _hooks.CreateHook<UpdatePartyPostBattleEXP>(UpdatePartyPostBattleEXPImpl, result.Offset + Utils.BaseAddress).Activate();
             });
 
             startupScanner.AddMainModuleScan("8B F8 33 DB 0F B7 84 24 ?? ?? ?? ??", result =>
@@ -226,8 +244,20 @@ namespace p5rpc.playAsParty
 
         private void UpdatePartyPostBattleImpl(nint param1)
         {
+            p5rLib.FlowCaller.SET_EQUIP(1, 3, 0x7010);
             updateBattleHook!.OriginalFunction(param1);
-            p5rLib.FlowCaller.SET_EQUIP(1,3,28968);
+        }
+
+        private nint UpdateCostumePreBattleImpl(nint param1, nint param2)
+        {
+            p5rLib.FlowCaller.SET_EQUIP(1, 3, 0x701A);
+            return updateCostumePreBattleHook!.OriginalFunction(param1, param2);
+        }
+
+        private void UpdatePartyPostBattleEXPImpl(nint param1, nint param2)
+        {
+            p5rLib.FlowCaller.SET_EQUIP(1, 3, 0x7010);
+            updateBattleHookEXP!.OriginalFunction(param1, param2);
         }
 
         #region Standard Overrides
